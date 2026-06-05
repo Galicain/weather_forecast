@@ -2,6 +2,7 @@
 
 from pathlib import Path
 import pathlib
+import cdsapi
 
 ############################################
 # Configuration CDS API écrite automatiquement
@@ -52,8 +53,6 @@ class CFG:
 DOWNLOAD = True
 
 if DOWNLOAD:
-
-    import cdsapi
 
     client = cdsapi.Client()
 
