@@ -1,0 +1,83 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Preámbulo                                                                    %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[11pt,a4paper,titlepage,twoside,openright,openbib]{report}
+
+\usepackage{styletfm}
+
+\hypersetup{pdfauthor={Nombre del estudiante},
+            pdftitle={Título del trabajo fin de Máster},
+            pdfsubject={Traballo Fin de Máster},
+            pdfkeywords={Palabrasclave}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Cuerpo                                                                      %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ % Preliminares del documento           %
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+ \include{portada/portada}
+ \paginaenblanco
+ \dedicatoria{To Mr. Metzger, my mathematics teacher, who helped shape my thinking and analytical skills.}
+ \paginaenblanco
+ \paginaenblanco
+ \begin{Acknowledgements}
+I would like to express my sincere gratitude to all my professors throughout my academic journey, and in particular to Juan, Karima, and my master’s thesis supervisor for their guidance and support.
+
+I am especially thankful to Thomas Brasdefer, Enzo Fernandez, and Antoine Kraus for accompanying me throughout these three years of study.
+
+I would also like to thank Thomas Llasera for encouraging open-mindedness and providing valuable perspective.
+
+Finally, I am deeply grateful to my parents for always believing in me.
+ \end{Acknowledgements}
+ \paginaenblanco
+ \include{portada/resumen}
+ \paginaenblanco
+
+ \pagenumbering{roman}
+ \setcounter{page}{1}
+
+ \tableofcontents
+ \listoffigures
+ \listoftables
+ \cleardoublepage
+ 
+ \pagenumbering{arabic}
+ \setcounter{page}{1}
+
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ % Capítulos                            %
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+ \include{contenido/introduccion}
+ \include{contenido/StateoftheArt}
+ \include{contenido/DatasetandDataPreparation}
+ \include{contenido/Methodology}
+ \include{contenido/Implementation}
+ \include{contenido/ExperimentalResults}
+ \include{contenido/Discussion}
+ \include{contenido/conclusiones}
+
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ % Apéndices, glosarios y bibliografía  %
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+ \appendix
+ \include{anexos/anexos}
+%\include{anexos/...}
+
+ \include{bibliografia/acronimos}
+ \include{bibliografia/glosario}
+
+ \bibliographystyle{IEEEtranN}
+ \bibliography{bibliografia/bibliografia}
+ \cleardoublepage
+ 
+\end{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -1,0 +1,83 @@
+\chapter{Dataset and Data Preparation}
+\label{chap:Dataset and Data Preparation}
+
+\section{ERA5 Dataset Description}
+The dataset used in this project is derived from the ERA5 reanalysis dataset, produced by the European Centre for Medium-Range Weather Forecasts (ECMWF). ERA5 is a global atmospheric reanalysis that combines numerical weather prediction models with observational data from satellites, weather stations, aircraft, and other measurement systems to reconstruct past atmospheric states.
+
+ERA5 provides a comprehensive representation of the Earth's atmosphere with hourly temporal resolution and global spatial coverage. The dataset includes a large number of atmospheric variables such as temperature, wind speed, humidity, pressure, and geopotential height, available at multiple pressure levels and spatial resolutions.
+
+Although ERA5 contains a wide variety of meteorological variables, this project adopts a simplified configuration in order to validate the deep learning pipeline and reduce computational complexity during the experimentation phase. More specifically, the experiments conducted in this work focus on a single variable: air temperature at the 1000 hPa pressure level. This variable represents the atmospheric temperature close to the Earth's surface and is commonly used in meteorological forecasting studies.
+
+The choice of using a single variable facilitates the development and evaluation of the forecasting models while keeping data preprocessing and training processes manageable. In this study, surface temperature is therefore used as the sole input variable and is measured in Kelvin (K). Although the ERA5 dataset provides many additional meteorological variables, such as wind components, humidity, and geopotential height, these are not included in the current experiments in order to simplify the modeling process and validate the forecasting pipeline.
+
+Nevertheless, it is important to note that incorporating additional atmospheric variables could potentially improve forecasting accuracy in future work, as ERA5 offers a rich and diverse set of meteorological information.
+\section{Data Acquisition}
+\subsection{Data Collection}
+
+The meteorological data used in this project is downloaded from the Climate Data Store (CDS) using the CDS API, which allows automated access to ERA5 datasets through Python scripts.
+
+The request sent to the API specifies several parameters including the atmospheric variable, the pressure level, the temporal range, the geographical region, and the spatial grid resolution. The request structure used in this project is shown below:
+
+\begin{verbatim}
+request = {
+   "product_type": ["reanalysis"],
+   "variable": [CFG.variable],
+   "pressure_level": [CFG.pressure_level],
+   "year": [year],
+   "month": [month],
+   "day": [f"{d:02d}" for d in range(1, 32)],
+   "time": list(CFG.times),
+   "data_format": "netcdf",
+   "download_format": "unarchived",
+   "area": list(CFG.area),
+   "grid": list(CFG.grid),
+}
+\end{verbatim}
+
+This request specifies the following parameters:
+
+\begin{itemize}
+    \item \textbf{product\_type} -- selects reanalysis data from the ERA5 dataset
+    \item \textbf{variable} -- atmospheric variable to retrieve (temperature in this project)
+    \item \textbf{pressure\_level} -- pressure level corresponding to the surface level used for the experiments
+    \item \textbf{year, month, day} -- temporal coverage of the requested data
+    \item \textbf{time} -- list of hourly timestamps included in the dataset
+    \item \textbf{area} -- geographical region selected for the study
+    \item \textbf{grid} -- spatial resolution of the dataset
+    \item \textbf{data\_format} -- output format used to store the data (NetCDF)
+\end{itemize}
+
+\subsection{Dataset Temporal Split}
+
+To train and evaluate the machine learning models, the collected data is divided into three subsets:
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|c|l|}
+\hline
+\textbf{Dataset} & \textbf{Years} & \textbf{Purpose} \\
+\hline
+Training dataset & 2011--2020 & Model training \\
+Test dataset & 2021 & Model evaluation \\
+Validation dataset & 2022 & Hyperparameter tuning and model selection \\
+\hline
+\end{tabular}
+\caption{Temporal split of the dataset}
+\end{table}
+
+The training dataset is used to learn the model parameters. The validation dataset is used during training to monitor model performance and tune hyperparameters. Finally, the test dataset is used to evaluate the final performance of the trained models.
+\section{Data Format}
+The ERA5 data is stored in NetCDF (Network Common Data Form) format. NetCDF is a widely used data format in atmospheric and climate sciences for storing multi-dimensional scientific datasets.
+NetCDF files allow efficient storage and retrieval of large datasets and include metadata describing variables, units, and dimensions.
+In the ERA5 dataset, each meteorological variable is represented as a multi-dimensional array indexed by spatial and temporal coordinates.
+Typical dimensions in the NetCDF files include:
+\begin{itemize}
+    \item time – represents hourly timestamps
+    \item latitude – spatial coordinates along the north–south axis
+    \item longitude – spatial coordinates along the east–west axis
+    \item variable values – meteorological measurements at each grid point
+\end{itemize}
+
+For example, the temperature variable can be represented as a three-dimensional array:
+temperature(time, latitude, longitude)
+This structure makes NetCDF particularly suitable for machine learning models that process spatio-temporal data.

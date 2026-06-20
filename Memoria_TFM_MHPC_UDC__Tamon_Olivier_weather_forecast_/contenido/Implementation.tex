@@ -1,0 +1,43 @@
+\chapter{Implementation}
+\label{chap:Implementation}
+
+\section{Software Environment}
+The implementation of the weather forecasting pipeline was developed entirely in Python, using several scientific computing and machine learning libraries.
+The main software tools used in this project are:
+Python
+Python is used as the main programming language for implementing the data pipeline, model training, evaluation procedures, and visualization of results. Python provides a flexible ecosystem for scientific computing and deep learning applications.
+\subsection{PyTorch}
+The deep learning model is implemented using PyTorch, a widely used machine learning framework that provides efficient GPU acceleration and automatic differentiation. PyTorch is used to define the neural network architecture, implement the training loop, compute the loss function, and perform inference with the trained model.
+\subsection{Numpy}
+The NumPy library is used for numerical computations and array manipulations. ERA5 data extracted from NetCDF files are converted into NumPy arrays before being transformed into tensors for model training.
+\subsection{Xarray}
+Meteorological data are stored in NetCDF format, which contains multidimensional arrays representing spatial and temporal variables. The xarray library is used to load these datasets, select variables, and manipulate atmospheric data efficiently before converting them into a format suitable for machine learning.
+\subsection{Matplotlib}
+The Matplotlib library is used for visualizing results. It is used to generate plots illustrating the training process and the performance of the forecasting model. In particular, graphs are produced to show how prediction errors (RMSE and MAE) evolve as the forecasting horizon increases.
+\subsection{Additional libraries}
+Other supporting libraries are also used in the pipeline:
+\begin{itemize}
+    \item Torch utilities for dataset management and data loading
+    \item JSON for saving experiment metrics and normalization parameters
+    \item Zipfile for exporting experiment outputs and results
+\end{itemize}
+
+Together, these tools provide a complete environment for implementing the full forecasting workflow, from raw data processing to model evaluation and visualization.
+\section{Hardware Environment}
+
+The experiments were conducted using two different computing environments in order to evaluate the performance of the model under different hardware conditions.
+
+\subsection{Google Colab GPU environment}
+Part of the experimentation was performed using Google Colab, which provides access to cloud-based GPUs for deep learning experiments. This environment allowed rapid testing and debugging of the training pipeline without requiring local GPU configuration. Google Colab provides a convenient platform for running PyTorch models with GPU acceleration and managing large datasets.
+\subsection{Local workstation}
+Additional experiments were performed on a local desktop computer equipped with an NVIDIA GeForce GTX 1660 Ti GPU. This GPU provides hardware acceleration for deep learning computations through CUDA support in PyTorch.
+Using a local GPU allowed faster training iterations compared to CPU execution and enabled full control over the experimental setup, including dataset management and longer training sessions.
+\subsection{Hardware configuration summary}
+The main hardware resources used in this project include:
+\begin{itemize}
+    \item GPU (cloud environment): Google Colab GPU
+    \item GPU (local environment): NVIDIA GeForce GTX 1660 Ti
+    \item Framework: PyTorch with CUDA support
+\end{itemize}
+
+The availability of GPU acceleration significantly reduced the training time of the neural network models and enabled efficient experimentation with different configurations of the forecasting pipeline.

@@ -1,0 +1,46 @@
+\chapter{State of the Art}
+\label{chap:State of the Art}
+
+Weather forecasting has evolved significantly over the past decades with the development of advanced numerical models and increased computational power. Recently, artificial intelligence techniques have emerged as promising alternatives for modeling atmospheric dynamics.
+This chapter reviews existing research in weather forecasting, including traditional numerical approaches and modern machine learning methods.
+
+\section{Numerical Weather Prediction}
+Numerical Weather Prediction (NWP) models simulate atmospheric dynamics by solving physical equations governing fluid motion and thermodynamics. These models divide the atmosphere into three-dimensional grids and compute the evolution of meteorological variables over time. Operational forecasting centers such as the European Centre for Medium-Range Weather Forecasts (ECMWF) operate global models capable of producing forecasts several days in advance. Key predicted variables include temperature, pressure, wind speed, humidity, and geopotential height. Although these models provide highly accurate forecasts, they require substantial computational resources.
+\section{Limitations of Numerical Weather Prediction}
+Despite their accuracy, Numerical Weather Prediction (NWP) systems present several important limitations. First, they involve a high computational cost, as global simulations require powerful supercomputers. In addition, these models rely on complex parameterization schemes, where many atmospheric processes must be approximated using simplified representations. NWP systems are also highly sensitive to initial conditions: even small errors in the initial state of the atmosphere can lead to significant prediction inaccuracies due to the chaotic nature of atmospheric dynamics. Furthermore, despite the availability of large volumes of atmospheric and observational data, traditional NWP models do not fully exploit these datasets. Much of the available data remains underutilized, as these systems primarily rely on physically based models and specific data assimilation methods rather than learning directly from historical data. These limitations motivate the exploration of data-driven forecasting approaches.
+\section{Statistical Forecasting Methods}
+Before the rise of machine learning, statistical models were widely used to forecast meteorological variables. Common approaches included linear regression models, autoregressive models, ARIMA models \cite{ForecastingdailymeteorologicaltimeseriesusingARIMA}, and Kalman filtering techniques. These methods aim to capture relationships between past and future atmospheric states based on statistical correlations. While they can be effective for simple time-series forecasting tasks, they generally struggle to model the complex nonlinear dynamics inherent to atmospheric systems.
+\section{Machine Learning in Weather Forecasting}
+Machine learning methods provide an alternative approach to forecasting by learning patterns directly from historical data. Early applications of machine learning in meteorology relied on algorithms such as decision trees, support vector machines, and shallow neural networks. These techniques have been used for precipitation prediction, temperature forecasting~\cite{AtmosphericTemperaturePredictionusingSupportVectorMachines}, and storm classification. However, traditional machine learning models are limited in their ability to process high-dimensional spatial data.
+\section{Deep Learning for Meteorological Data}
+Deep learning models have significantly improved the ability to process large meteorological datasets.
+Meteorological data is naturally represented as spatio-temporal grids, which makes deep learning architectures such as convolutional neural networks particularly suitable.
+Deep learning models can capture complex relationships between atmospheric variables and learn hierarchical representations of spatial patterns.
+\subsection{Convolutional Neural Networks}
+Convolutional Neural Networks (CNNs) are widely used for spatial data analysis. These networks apply convolutional filters to detect spatial patterns in input data. In meteorology, CNNs are capable of identifying important structures such as pressure systems, temperature gradients, and cloud formations \cite{CNNexemple}. CNN-based models have been successfully applied to tasks such as precipitation forecasting and radar image analysis.
+\subsection{Recurrent Neural Networks}
+Recurrent Neural Networks (RNNs) are designed to model temporal sequences.
+Variants such as Long Short-Term Memory (LSTM) networks are commonly used for time series forecasting tasks.
+RNNs can capture temporal dependencies between atmospheric states and have been used to predict variables such as temperature and rainfall \cite{RNNexemple}.
+\subsection{Spatio-Temporal Neural Networks}
+To combine spatial and temporal modeling, researchers have proposed hybrid architectures that integrate convolutional and recurrent layers.
+One example is the ConvLSTM \cite{ConvolutionalLSTMNetwork} architecture, which replaces fully connected operations in LSTM networks with convolutional layers.
+These models are widely used for precipitation nowcasting and radar image forecasting.
+\subsection{Encoder–Decoder Architectures}
+Encoder–decoder networks are commonly used for spatial prediction tasks.
+These networks encode input data into feature representations and then decode them to produce output predictions.
+One example is U-Net, which introduces skip connections between encoder and decoder layers to preserve spatial details \cite{UNETexemple}.
+In this project, encoder–decoder models may be tested among other architectures.
+\subsection{Large-Scale AI Weather Forecasting Systems}
+Recent advances in artificial intelligence have produced large-scale weather forecasting models trained on decades of meteorological data. Examples include:
+
+\begin{itemize}
+	\item \textbf{GraphCast} \\
+	GraphCast is a machine learning model developed by DeepMind that predicts global weather conditions using graph neural networks. It was trained on ERA5 data and has demonstrated strong forecasting performance~\cite{GraphCast}.
+	
+	\item \textbf{Pangu-Weather} \\
+	Pangu-Weather is a transformer-based forecasting model capable of generating high-resolution global forecasts~\cite{Pangu-Weather}.
+	
+	\item \textbf{FourCastNet} \\
+	FourCastNet uses Fourier neural operators to model atmospheric dynamics and generate global forecasts efficiently \cite{FourCastNet}.
+\end{itemize}

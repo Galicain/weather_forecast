@@ -1,0 +1,59 @@
+\chapter{Methodology}
+\label{chap:Methodology}
+
+\section{Weather Forecasting Pipeline}
+The weather forecasting pipeline implemented in this project follows a structured workflow composed of several stages. The goal is to transform raw atmospheric reanalysis data into machine learning predictions capable of forecasting future weather states.
+
+The main stages of the pipeline are the following:
+\subsection{Data acquisition}
+
+Weather data are obtained from the ERA5 reanalysis dataset, provided by the Copernicus Climate Data Store (CDS). ERA5 provides high-resolution atmospheric variables reconstructed using numerical weather prediction models and observational data. In this project, the data are downloaded automatically through the CDS API using Python scripts. The selected dataset corresponds to the ERA5 pressure-level data, from which the temperature variable at the 1000 hPa pressure level is extracted over the European region. Data are downloaded monthly and stored as NetCDF files.
+
+\subsection{Data preprocessing}
+
+Once downloaded, the NetCDF files are loaded using the xarray library, which is designed for handling multidimensional scientific data. The temperature field is extracted, converted into NumPy arrays, and reshaped into a format compatible with deep learning frameworks. Each sample corresponds to a spatial grid of temperature values at a given time step.
+
+\subsection{Model training}
+
+A neural network model based on a U-Net encoder–decoder architecture is trained to learn the mapping between the atmospheric state at time ttt and the state at time t+6 hours. The dataset is divided into training, validation, and test subsets using a temporal split. During training, the model parameters are optimized using the Adam optimizer with a Mean Squared Error (MSE) loss function.
+
+\subsection{Forecast generation}
+
+Once trained, the best-performing model (based on validation loss) is used to generate predictions. Multi-step forecasts are produced using a recursive forecasting strategy, where the predicted state at time t+6 becomes the input for predicting the state at t+12, and so on. This allows the model to generate forecasts for several days ahead.
+
+\subsection{Evaluation and visualization}
+
+The quality of the predictions is evaluated using common regression metrics such as Root Mean Square Error (RMSE) and Mean Absolute Error (MAE). These metrics are computed for different forecast horizons. Results are visualized through graphs showing how prediction accuracy evolves as the forecast horizon increases.
+
+\section{Data Preprocessing}
+
+Data preprocessing is an essential step for transforming raw meteorological data into a format suitable for machine learning models. In this project, the preprocessing pipeline involves several operations, including data loading, variable selection, normalization, and dataset splitting.
+
+The ERA5 data used in this study are stored in NetCDF format, which is widely employed for climate and atmospheric datasets. These files are loaded using the Python library \textit{xarray}, which enables efficient manipulation of multidimensional arrays representing both spatial and temporal information. From each NetCDF file, the temperature variable at the 1000 hPa pressure level is extracted over the selected geographical region in Europe.
+
+After extraction, the data are converted into NumPy arrays and reshaped into a format compatible with deep learning models. The resulting data tensor follows a four-dimensional structure defined by time, channels, height, and width, where time represents the sequence of time steps, channels corresponds to the number of atmospheric variables used as input, and height and width represent the spatial dimensions of the temperature grid. In this project, only one variable is considered, meaning that the number of channels is equal to one.
+
+To improve the stability and efficiency of neural network training, the data are normalized using z-score normalization. This transformation consists of subtracting the mean of the dataset from each value and dividing the result by the standard deviation. As a result, the data are centered around zero and scaled so that the variance is approximately equal to one. This normalization process facilitates faster convergence during training and enhances numerical stability.
+
+Finally, the dataset is divided chronologically into three subsets: a training set representing 84\% of the data, a validation set accounting for 8\%, and a test set also representing 8\%. This temporal split ensures that the model is evaluated on future data that were not seen during training, thereby providing a more realistic assessment of forecasting performance.
+
+\section{Temporal Windowing}
+Weather forecasting inherently involves temporal dependencies, as atmospheric states evolve continuously over time. Capturing these temporal relationships is therefore essential for producing accurate predictions. In this project, a time-step prediction approach is adopted, where the model is trained to predict the atmospheric state at time $t+6$ hours from the state at time $t$.
+
+During training, each sample consists of an input corresponding to the atmospheric state at time $t$ and a target corresponding to the state at time $t+6$, with each time step representing a 6-hour interval in the ERA5 dataset. This formulation allows the model to learn the temporal evolution of atmospheric conditions over short time horizons.
+
+Once trained, the model is able to generate longer forecasts using a recursive prediction strategy. In this approach, the predicted output at one time step is reused as the input for the subsequent prediction. As a result, the model can iteratively produce forecasts at $t+6$, $t+12$, $t+18$ hours, and beyond, enabling predictions over several days despite being trained on short-term dependencies.
+
+\section{Neural Network Architectures}
+Several deep learning architectures can be applied to the problem of weather forecasting, as atmospheric dynamics involve complex spatial and temporal interactions.
+Possible architectures include:
+\subsection{Convolutional Neural Networks (CNNs)}
+CNNs are widely used for spatial data processing. They are particularly effective for capturing local spatial structures, such as temperature gradients or pressure patterns across geographic grids.
+\subsection{Encoder–decoder networks (U-Net)}
+In this project, the main architecture used is a U-Net model, which follows an encoder–decoder structure. The encoder compresses the spatial information into higher-level feature representations, while the decoder reconstructs the predicted temperature field. Skip connections between encoder and decoder layers help preserve spatial details and improve prediction accuracy.
+\subsection{Recurrent Neural Networks}
+Recurrent architectures such as LSTM or GRU networks are often used for modeling sequential data. These models can capture temporal dependencies more explicitly, making them suitable for time series forecasting tasks.
+\subsection{Hybrid spatio-temporal models}
+More advanced approaches combine convolutional and recurrent components, enabling the model to learn both spatial and temporal dynamics simultaneously. Examples include ConvLSTM networks or transformer-based weather models.
+The objective of this study is to evaluate how well deep learning models can capture atmospheric patterns from reanalysis data and generate accurate short- to medium-range forecasts.
+

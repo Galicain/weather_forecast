@@ -1,0 +1,108 @@
+This is BibTeX, Version 0.99d (TeX Live 2025/nixos.org)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: memtfm.aux
+A level-1 auxiliary file: portada/portada.aux
+A level-1 auxiliary file: portada/resumen.aux
+A level-1 auxiliary file: contenido/introduccion.aux
+A level-1 auxiliary file: contenido/StateoftheArt.aux
+A level-1 auxiliary file: contenido/DatasetandDataPreparation.aux
+A level-1 auxiliary file: contenido/Methodology.aux
+A level-1 auxiliary file: contenido/Implementation.aux
+A level-1 auxiliary file: contenido/ExperimentalResults.aux
+A level-1 auxiliary file: contenido/Discussion.aux
+A level-1 auxiliary file: contenido/conclusiones.aux
+A level-1 auxiliary file: anexos/anexos.aux
+A level-1 auxiliary file: bibliografia/acronimos.aux
+A level-1 auxiliary file: bibliografia/glosario.aux
+The style file: IEEEtranN.bst
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Database file #1: bibliografia/bibliografia.bib
+-- IEEEtranN.bst version 1.14 (2015/08/26) by Michael Shell.
+-- http://www.michaelshell.org/tex/ieeetran/bibtex/
+-- See the "IEEEtran_bst_HOWTO.pdf" manual for usage information.
+** Natbib version - not for normal IEEE work.
+Reallocated glb_str_ptr (elt_size=4) to 20 items from 10.
+Reallocated global_strs (elt_size=200001) to 20 items from 10.
+Reallocated glb_str_end (elt_size=4) to 20 items from 10.
+Too many commas in name 1 of "Małgorzata Murat, Małgorzata Murat, Magdalena Gos, Jaromir Krzyszczak" for entry ForecastingdailymeteorologicaltimeseriesusingARIMA
+while executing---line 2715 of file IEEEtranN.bst
+Too many commas in name 1 of "Ilias Chamatidis, Georgios Tzanes, Denis Istrati, Nikos D. Lagaros and Anastasios Stamou" for entry RNNexemple
+while executing---line 2715 of file IEEEtranN.bst
+Too many commas in name 1 of "Xingjian Shi, Zhourong Chen, Hao Wang, Dit-Yan Yeung, Wai-kin Wong, Wang-chun Woo" for entry ConvolutionalLSTMNetwork
+while executing---line 2715 of file IEEEtranN.bst
+Too many commas in name 1 of "Xingjian Shi, Zhourong Chen, Hao Wang, Dit-Yan Yeung, Wai-kin Wong, Wang-chun Woo" for entry ConvolutionalLSTMNetwork
+while executing---line 2715 of file IEEEtranN.bst
+Too many commas in name 1 of "Xingjian Shi, Zhourong Chen, Hao Wang, Dit-Yan Yeung, Wai-kin Wong, Wang-chun Woo" for entry ConvolutionalLSTMNetwork
+while executing---line 2715 of file IEEEtranN.bst
+Too many commas in name 1 of "Małgorzata Murat, Małgorzata Murat, Magdalena Gos, Jaromir Krzyszczak" for entry ForecastingdailymeteorologicaltimeseriesusingARIMA
+while executing---line 2729 of file IEEEtranN.bst
+Too many commas in name 1 of "Małgorzata Murat, Małgorzata Murat, Magdalena Gos, Jaromir Krzyszczak" for entry ForecastingdailymeteorologicaltimeseriesusingARIMA
+while executing---line 2729 of file IEEEtranN.bst
+Warning--empty publisher in CNNexemple
+Too many commas in name 1 of "Ilias Chamatidis, Georgios Tzanes, Denis Istrati, Nikos D. Lagaros and Anastasios Stamou" for entry RNNexemple
+while executing---line 2729 of file IEEEtranN.bst
+Too many commas in name 1 of "Ilias Chamatidis, Georgios Tzanes, Denis Istrati, Nikos D. Lagaros and Anastasios Stamou" for entry RNNexemple
+while executing---line 2729 of file IEEEtranN.bst
+Warning--empty publisher in RNNexemple
+Too many commas in name 1 of "Xingjian Shi, Zhourong Chen, Hao Wang, Dit-Yan Yeung, Wai-kin Wong, Wang-chun Woo" for entry ConvolutionalLSTMNetwork
+while executing---line 2729 of file IEEEtranN.bst
+Too many commas in name 1 of "Xingjian Shi, Zhourong Chen, Hao Wang, Dit-Yan Yeung, Wai-kin Wong, Wang-chun Woo" for entry ConvolutionalLSTMNetwork
+while executing---line 2729 of file IEEEtranN.bst
+Too many commas in name 1 of "Xingjian Shi, Zhourong Chen, Hao Wang, Dit-Yan Yeung, Wai-kin Wong, Wang-chun Woo" for entry ConvolutionalLSTMNetwork
+while executing---line 2729 of file IEEEtranN.bst
+Too many commas in name 1 of "Xingjian Shi, Zhourong Chen, Hao Wang, Dit-Yan Yeung, Wai-kin Wong, Wang-chun Woo" for entry ConvolutionalLSTMNetwork
+while executing---line 2729 of file IEEEtranN.bst
+Too many commas in name 1 of "Xingjian Shi, Zhourong Chen, Hao Wang, Dit-Yan Yeung, Wai-kin Wong, Wang-chun Woo" for entry ConvolutionalLSTMNetwork
+while executing---line 2729 of file IEEEtranN.bst
+Too many commas in name 1 of "Xingjian Shi, Zhourong Chen, Hao Wang, Dit-Yan Yeung, Wai-kin Wong, Wang-chun Woo" for entry ConvolutionalLSTMNetwork
+while executing---line 2729 of file IEEEtranN.bst
+Warning--empty publisher in ConvolutionalLSTMNetwork
+Warning--empty publisher in FourCastNet
+
+Done.
+You've used 9 entries,
+            4855 wiz_defined-function locations,
+            1009 strings with 10856 characters,
+and the built_in function-call counts, 6090 in all, are:
+= -- 352
+> -- 296
+< -- 31
++ -- 123
+- -- 76
+* -- 361
+:= -- 938
+add.period$ -- 14
+call.type$ -- 9
+change.case$ -- 17
+chr.to.int$ -- 81
+cite$ -- 13
+duplicate$ -- 439
+empty$ -- 554
+format.name$ -- 90
+if$ -- 1345
+int.to.chr$ -- 1
+int.to.str$ -- 10
+missing$ -- 74
+newline$ -- 51
+num.names$ -- 27
+pop$ -- 268
+preamble$ -- 1
+purify$ -- 9
+quote$ -- 2
+skip$ -- 398
+stack$ -- 0
+substring$ -- 75
+swap$ -- 223
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 6
+type$ -- 72
+warning$ -- 4
+while$ -- 26
+width$ -- 0
+write$ -- 104
+(There were 15 error messages)

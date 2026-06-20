@@ -1,0 +1,13 @@
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {6.1}{\ignorespaces \xpg@aux {}{english}\ignorespaces Learning curves of the U-Net model trained using the Mean Squared Error (MSE) loss function.}}{20}{figure.6.1}%
+\contentsline {figure}{\numberline {6.2}{\ignorespaces \xpg@aux {}{english}\ignorespaces Spatial field comparison between ground truth (left) and model prediction (right) at lead time t+6.}}{21}{figure.6.2}%
+\contentsline {figure}{\numberline {6.3}{\ignorespaces \xpg@aux {}{english}\ignorespaces Evolution of RMSE and MAE as a function of forecast lead time.}}{22}{figure.6.3}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }

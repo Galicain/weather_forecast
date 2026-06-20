@@ -1,0 +1,86 @@
+\ProvidesPackage{styletfm}
+
+%%                                   %%
+%% Paquetes a incluir por defecto    %%
+%%                                   %%
+
+\RequirePackage{color}
+\RequirePackage{graphicx}
+\RequirePackage[colorlinks]{hyperref}
+\RequirePackage{lettrine}
+
+\usepackage{polyglossia}
+\setdefaultlanguage{english}
+\setotherlanguage{english}
+
+\usepackage{latexsym}
+\usepackage{amssymb}
+
+\usepackage[hmargin={4cm,2.5cm},tmargin=4cm,bmargin=4cm]{geometry}
+
+\usepackage{libertine}
+
+\usepackage{fancyhdr}
+\usepackage[numbers,sort]{natbib} 
+\usepackage{setspace}
+\usepackage{multicol}
+\usepackage[nottoc,notlot,notlof,notindex]{tocbibind}
+\usepackage{titlesec}
+\usepackage{url}
+
+\usepackage{blindtext}
+
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% % definición de comandos               %
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\definecolor{udcpink}{RGB}{177,0,114}
+\definecolor{udcgray}{RGB}{100,100,100}
+\definecolor{ficblue}{RGB}{50,110,118}
+
+\newcommand{\paginaenblanco}{\mbox{}\thispagestyle{empty}\clearpage}
+\newcommand{\dedicatoria}[1]{\thispagestyle{empty}\mbox{}\vfill\hfill\emph{#1}\vfill}
+\newenvironment{Acknowledgements}
+               {\thispagestyle{empty}
+                 \vspace*{175pt}
+                 \subsubsection*{\centering Acknowledgements}}
+               {\paginaenblanco}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% opcións titlesec                     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\bigrule}{{\color{udcpink}\titlerule[0.5mm]}}
+\titleformat{\chapter}[display]%
+{\bfseries\Huge}%
+{\filleft\Large\chaptertitlename \Large{} \thechapter}%
+{0mm}{\filleft}[\vspace{0.5cm} \bigrule]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% opcións fancyhdr                     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagestyle{fancy}
+\fancyhead{}
+\fancyhead[LO]{{\small\leftmark}}
+\fancyhead[RE]{{\small\nouppercase{\textsl{\rightmark}}}}
+\fancyfoot{}
+\fancyfoot[CE,CO]{\thepage}
+\setlength{\headheight}{14pt}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% opcións setspace                     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\onehalfspacing
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% opcións hyperref                     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\hypersetup{
+ colorlinks=true,
+ linkcolor=ficblue,
+ filecolor=ficblue,      
+ urlcolor=ficblue,
+ citecolor=ficblue
+}
+               
+\endinput
