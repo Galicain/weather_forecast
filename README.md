@@ -4,7 +4,6 @@
 - Abstract doit être réecris a la toutes fin je pense
 - Rajouter un moyen de pouvoir remonter a l'endroit ou a était cité la publication
 - Voir pour rajouter plus de données mais je suis pas sur
-- Dans le premier chapitre du paragraphe 5.1 il y a deux fois python
 - Rerédiger le 4.4.2 car je vais faire d'autre model
 - tranformer le 4.4.4 pour le dédier au ConvLSTM
 - Faire un lien avec la météo dans le paragraphe 4.4.3
@@ -15,8 +14,15 @@
 - Penser a modifier le texte pour citer les figures quand elle sont analysée
 - Voir pour faire Un glossaire de termes et d'acronyme propre
 - Changer le noms des parties en espagnol en anglais (glossaire)
-- Refaire ma page de remerciments au complet
 - Mettre un nom de département sur la page de couverture
+
+### Remerciments
+
+- Ajouter un paragraphe sur léo yvan et cédric
+- Ajouter un paragraphe sur gauthier, yu et tristan
+- Ajouter clement pour être venue avec moi en espagne
+- Faire attention au tab car il en manque un au début
+- Ajouter a la partie sur mes parents leurs soutien en plus de croire en moi
 
 ## Code:
 - Implémenter une solution RNN (LSTM)
