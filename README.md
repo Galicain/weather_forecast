@@ -1,28 +1,18 @@
 
 ## Rapport
-- Refaire le states of art pour citer des articles scientifiques et les mettres dans la bibliographie
-- Abstract doit être réecris a la toutes fin je pense
-- Rajouter un moyen de pouvoir remonter a l'endroit ou a était cité la publication
-- Voir pour rajouter plus de données mais je suis pas sur
+- Voir pour faire Un glossaire de termes et d'acronyme propre
+- Changer le noms des parties en espagnol en anglais (glossaire)
+### Partie 4
 - Rerédiger le 4.4.2 car je vais faire d'autre model
 - tranformer le 4.4.4 pour le dédier au ConvLSTM
 - Faire un lien avec la météo dans le paragraphe 4.4.3
 - Réecrire les parties 4 pour que l'explication de la pipeline soit toutes la partie 4 et qu'il y a ait pas deux cotés différents bizzare
-- Réecrire la partie 5.2 en modifiant les graphe pour faire les calculs sur le finistarae et du coup supprimer la partie google colab
 - Mettre le 4.1 en intro de chapitre sans le mettre dans une partie
-- A rerédiger la partie résultats pour présenter différement les résulatas pour chaque architecture de Deep Learning (surtout la 6.2)
-- Penser a modifier le texte pour citer les figures quand elle sont analysée
-- Voir pour faire Un glossaire de termes et d'acronyme propre
-- Changer le noms des parties en espagnol en anglais (glossaire)
+
+### Détail
+- Abstract doit être réecris a la toutes fin je pense
+- Rajouter un moyen de pouvoir remonter a l'endroit ou a était cité la publication
 - Mettre un nom de département sur la page de couverture
-
-### Remerciments
-
-- Ajouter un paragraphe sur léo yvan et cédric
-- Ajouter un paragraphe sur gauthier, yu et tristan
-- Ajouter clement pour être venue avec moi en espagne
-- Faire attention au tab car il en manque un au début
-- Ajouter a la partie sur mes parents leurs soutien en plus de croire en moi
 
 ## Code:
 - Implémenter une solution RNN (LSTM)

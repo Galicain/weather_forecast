@@ -23,20 +23,26 @@ Other supporting libraries are also used in the pipeline:
 
 Together, these tools provide a complete environment for implementing the full forecasting workflow, from raw data processing to model evaluation and visualization.
 \section{Hardware Environment}
-
-The experiments were conducted using two different computing environments in order to evaluate the performance of the model under different hardware conditions.
+The experiments were conducted using three different computing environments in order to evaluate the performance of the model under different hardware conditions. The Google Colab and local workstation environments were used exclusively for testing and debugging the code, while only the results obtained on the FinisTerrae III supercomputer were retained for the final analysis presented in this work.
 
 \subsection{Google Colab GPU environment}
-Part of the experimentation was performed using Google Colab, which provides access to cloud-based GPUs for deep learning experiments. This environment allowed rapid testing and debugging of the training pipeline without requiring local GPU configuration. Google Colab provides a convenient platform for running PyTorch models with GPU acceleration and managing large datasets.
+Part of the early-stage experimentation was performed using Google Colab, which provides access to cloud-based GPUs for deep learning experiments. This environment allowed rapid testing and debugging of the training pipeline without requiring local GPU configuration. Google Colab provided a convenient platform for verifying the correctness of the PyTorch implementation with GPU acceleration before scaling up to larger experiments. Results obtained in this environment were used solely for code validation and were not included in the final analysis.
+
 \subsection{Local workstation}
-Additional experiments were performed on a local desktop computer equipped with an NVIDIA GeForce GTX 1660 Ti GPU. This GPU provides hardware acceleration for deep learning computations through CUDA support in PyTorch.
-Using a local GPU allowed faster training iterations compared to CPU execution and enabled full control over the experimental setup, including dataset management and longer training sessions.
+Additional testing was performed on a local desktop computer equipped with an NVIDIA GeForce GTX 1660 Ti GPU. This GPU provided hardware acceleration for deep learning computations through CUDA support in PyTorch.
+Using a local GPU allowed faster debugging iterations compared to CPU execution and enabled full control over the experimental setup during the development phase. As with the Google Colab environment, this setup was used exclusively for code testing purposes, and the results produced here were not retained for analysis.
+
+\subsection{HPC supercomputer environment}
+In the context of the HPC (High Performance Computing) master's program, the main experiments were carried out on the FinisTerrae III supercomputer, granting access to both CPU and NVIDIA A100 GPU resources. This environment was used to compare execution times between CPU and GPU computations, allowing a clear assessment of the performance gains achieved through GPU acceleration.
+The most computationally intensive workloads were executed on the A100 GPUs, which provide significantly higher throughput and memory bandwidth than the GPUs used in the other two environments. As a result, all the results presented and analyzed in this work were obtained exclusively from experiments conducted on FinisTerrae III, ensuring consistency and reliability across the reported performance metrics.
+
 \subsection{Hardware configuration summary}
 The main hardware resources used in this project include:
 \begin{itemize}
-    \item GPU (cloud environment): Google Colab GPU
-    \item GPU (local environment): NVIDIA GeForce GTX 1660 Ti
-    \item Framework: PyTorch with CUDA support
+	\item GPU (cloud environment, testing only): Google Colab GPU
+	\item GPU (local environment, testing only): NVIDIA GeForce GTX 1660 Ti
+	\item CPU/GPU (HPC environment, analysis): FinisTerrae III supercomputer with NVIDIA A100 GPUs
+	\item Framework: PyTorch with CUDA support
 \end{itemize}
 
-The availability of GPU acceleration significantly reduced the training time of the neural network models and enabled efficient experimentation with different configurations of the forecasting pipeline.
+The Google Colab and local workstation environments enabled rapid iteration and validation of the code during development, while all computationally demanding experiments and the corresponding results discussed throughout this work were obtained on the FinisTerrae III supercomputer, using its A100 GPUs to ensure both performance and reliability.
