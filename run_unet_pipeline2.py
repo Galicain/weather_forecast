@@ -1,7 +1,7 @@
-
 import os
 import json
 import math
+import time
 import zipfile
 import argparse
 
@@ -444,6 +444,50 @@ def save_recursive_metrics_plot(results, out_dir):
     return path
 
 
+def save_device_comparison_plot(timings, out_dir):
+    """
+    timings: dict du type {"cpu": 123.4, "cuda": 12.3}
+    """
+    devices = list(timings.keys())
+    times = [timings[d] for d in devices]
+
+    labels = {"cpu": "CPU", "cuda": "GPU"}
+    display_labels = [labels.get(d, d) for d in devices]
+
+    fig, ax = plt.subplots(figsize=(6, 4))
+    bars = ax.bar(display_labels, times, color=["#4C72B0", "#DD8452"][:len(devices)])
+    ax.set_title("Temps d'exécution total : CPU vs GPU")
+    ax.set_ylabel("Temps (secondes)")
+    ax.grid(True, axis="y", alpha=0.3)
+
+    for bar, t in zip(bars, times):
+        ax.text(
+            bar.get_x() + bar.get_width() / 2,
+            bar.get_height(),
+            f"{t:.1f}s",
+            ha="center",
+            va="bottom",
+        )
+
+    if len(times) == 2 and min(times) > 0:
+        speedup = max(times) / min(times)
+        faster = display_labels[times.index(min(times))]
+        ax.text(
+            0.5, 0.95,
+            f"{faster} est {speedup:.1f}x plus rapide",
+            transform=ax.transAxes,
+            ha="center",
+            va="top",
+            fontsize=9,
+            style="italic",
+        )
+
+    path = os.path.join(out_dir, "device_comparison.png")
+    fig.savefig(path, bbox_inches="tight")
+    plt.close(fig)
+    return path
+
+
 ############################################
 # ZIP
 ############################################
@@ -466,6 +510,135 @@ def zip_results(project_dir):
 # Main
 ############################################
 
+def run_pipeline_on_device(
+    device_str,
+    args,
+    train_dataset,
+    val_dataset,
+    test_dataset,
+    test_data,
+    mean,
+    std,
+    stats,
+    project_dir,
+):
+    """
+    Exécute tout le pipeline (train + eval + prévision récursive + sauvegardes)
+    sur le device donné ("cpu" ou "cuda"), et renvoie le temps total écoulé.
+    """
+    os.makedirs(project_dir, exist_ok=True)
+    device = torch.device(device_str)
+    print(f"\n=== Exécution sur device: {device} ===")
+
+    start_time = time.time()
+
+    train_loader = DataLoader(
+        train_dataset, batch_size=args.batch_size, shuffle=True, num_workers=0
+    )
+    val_loader = DataLoader(
+        val_dataset, batch_size=args.batch_size, shuffle=False, num_workers=0
+    )
+    test_loader = DataLoader(
+        test_dataset, batch_size=args.batch_size, shuffle=False, num_workers=0
+    )
+
+    model = UNet(in_channels=1, out_channels=1).to(device)
+
+    best_model_path = os.path.join(project_dir, "best_model_tplus6.pt")
+
+    print("Training one-step model (t -> t+6)")
+    history, best_val_loss = train_with_best_checkpoint(
+        model=model,
+        train_loader=train_loader,
+        val_loader=val_loader,
+        device=device,
+        epochs=args.epochs,
+        lr=args.lr,
+        checkpoint_path=best_model_path,
+    )
+    print(f"Best validation loss at t+6: {best_val_loss:.6f}")
+
+    print("Reloading best model")
+    model.load_state_dict(torch.load(best_model_path, map_location=device))
+    model.eval()
+
+    print("Evaluating best model on one-step test")
+    test_one_step_loss = evaluate_one_step(model, test_loader, device)
+    print(f"One-step test loss (t+6): {test_one_step_loss:.6f}")
+
+    x0, y0 = test_dataset[0]
+    with torch.no_grad():
+        pred0 = model(x0.unsqueeze(0).to(device)).cpu().squeeze(0).numpy()
+
+    y0_np = y0.numpy()
+    pred0_denorm = denormalize_data(pred0, mean, std)
+    y0_denorm = denormalize_data(y0_np, mean, std)
+
+    one_step_metrics = compute_metrics(y0_denorm, pred0_denorm)
+    print("Example one-step metrics:", one_step_metrics)
+
+    print("Running recursive multi-day forecast evaluation")
+    recursive_results = recursive_forecast_metrics(
+        model=model,
+        test_data_norm=test_data,
+        mean=mean,
+        std=std,
+        device=device,
+        max_days=args.max_days,
+        steps_per_day=4,
+    )
+
+    print("Recursive forecast metrics:")
+    for r in recursive_results:
+        print(
+            f"lead={r['lead_hours']:>3}h | "
+            f"RMSE={r['rmse']:.4f} | MAE={r['mae']:.4f} | n={r['n_samples']}"
+        )
+
+    elapsed = time.time() - start_time
+    print(f"Temps total d'exécution sur {device_str}: {elapsed:.2f}s")
+
+    print("Saving artifacts")
+    torch.save(model.state_dict(), os.path.join(project_dir, "final_model_loaded_from_best.pt"))
+
+    with open(os.path.join(project_dir, "normalization_stats.json"), "w", encoding="utf-8") as f:
+        json.dump(stats, f, indent=2)
+
+    with open(os.path.join(project_dir, "history.json"), "w", encoding="utf-8") as f:
+        json.dump(history, f, indent=2)
+
+    with open(os.path.join(project_dir, "one_step_test_metrics.json"), "w", encoding="utf-8") as f:
+        json.dump(
+            {
+                "best_val_loss_tplus6": best_val_loss,
+                "test_loss_tplus6": test_one_step_loss,
+                "example_metrics": one_step_metrics,
+                "elapsed_seconds": elapsed,
+            },
+            f,
+            indent=2,
+        )
+
+    with open(os.path.join(project_dir, "recursive_forecast_metrics.json"), "w", encoding="utf-8") as f:
+        json.dump(recursive_results, f, indent=2)
+
+    np.save(os.path.join(project_dir, "sample_target_tplus6_denorm.npy"), y0_denorm)
+    np.save(os.path.join(project_dir, "sample_prediction_tplus6_denorm.npy"), pred0_denorm)
+
+    save_loss_plot(history, project_dir)
+    save_prediction_example_plot(
+        y_true=y0_denorm,
+        y_pred=pred0_denorm,
+        out_dir=project_dir,
+        title_suffix="t+6",
+    )
+    save_recursive_metrics_plot(recursive_results, project_dir)
+
+    zip_results(project_dir)
+
+    return elapsed
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--data_dir", default="./data")
@@ -477,6 +650,12 @@ def main():
     parser.add_argument("--train_ratio", type=float, default=0.7)
     parser.add_argument("--val_ratio", type=float, default=0.15)
     parser.add_argument("--max_days", type=int, default=5)
+    parser.add_argument(
+        "--compare_devices",
+        action="store_true",
+        default=True,
+        help="Exécute le pipeline sur CPU et GPU (si dispo) et compare les temps.",
+    )
 
     args = parser.parse_args()
 
@@ -499,121 +678,40 @@ def main():
     val_dataset = WeatherDataset(val_data)
     test_dataset = WeatherDataset(test_data)
 
-    train_loader = DataLoader(
-        train_dataset,
-        batch_size=args.batch_size,
-        shuffle=True,
-        num_workers=0,
-    )
-    val_loader = DataLoader(
-        val_dataset,
-        batch_size=args.batch_size,
-        shuffle=False,
-        num_workers=0,
-    )
-    test_loader = DataLoader(
-        test_dataset,
-        batch_size=args.batch_size,
-        shuffle=False,
-        num_workers=0,
-    )
+    # Détermine les devices à tester
+    devices_to_run = ["cpu"]
+    if torch.cuda.is_available():
+        devices_to_run.append("cuda")
+    else:
+        print("GPU non disponible : la comparaison portera uniquement sur CPU.")
 
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    print("Device:", device)
+    timings = {}
 
-    model = UNet(in_channels=1, out_channels=1).to(device)
-
-    best_model_path = os.path.join(args.project_dir, "best_model_tplus6.pt")
-
-    print("Training one-step model (t -> t+6)")
-    history, best_val_loss = train_with_best_checkpoint(
-        model=model,
-        train_loader=train_loader,
-        val_loader=val_loader,
-        device=device,
-        epochs=args.epochs,
-        lr=args.lr,
-        checkpoint_path=best_model_path,
-    )
-
-    print(f"Best validation loss at t+6: {best_val_loss:.6f}")
-
-    print("Reloading best model")
-    model.load_state_dict(torch.load(best_model_path, map_location=device))
-    model.eval()
-
-    print("Evaluating best model on one-step test")
-    test_one_step_loss = evaluate_one_step(model, test_loader, device)
-    print(f"One-step test loss (t+6): {test_one_step_loss:.6f}")
-
-    # Exemple visuel sur un batch test
-    x0, y0 = test_dataset[0]
-    with torch.no_grad():
-        pred0 = model(x0.unsqueeze(0).to(device)).cpu().squeeze(0).numpy()
-
-    y0_np = y0.numpy()
-
-    pred0_denorm = denormalize_data(pred0, mean, std)
-    y0_denorm = denormalize_data(y0_np, mean, std)
-
-    one_step_metrics = compute_metrics(y0_denorm, pred0_denorm)
-    print("Example one-step metrics:", one_step_metrics)
-
-    print("Running recursive multi-day forecast evaluation")
-    recursive_results = recursive_forecast_metrics(
-        model=model,
-        test_data_norm=test_data,
-        mean=mean,
-        std=std,
-        device=device,
-        max_days=args.max_days,
-        steps_per_day=4,   # 6h -> 4 steps/day
-    )
-
-    # résumé console
-    print("Recursive forecast metrics:")
-    for r in recursive_results:
-        print(
-            f"lead={r['lead_hours']:>3}h | "
-            f"RMSE={r['rmse']:.4f} | MAE={r['mae']:.4f} | n={r['n_samples']}"
+    for device_str in devices_to_run:
+        device_project_dir = os.path.join(args.project_dir, device_str)
+        elapsed = run_pipeline_on_device(
+            device_str=device_str,
+            args=args,
+            train_dataset=train_dataset,
+            val_dataset=val_dataset,
+            test_dataset=test_dataset,
+            test_data=test_data,
+            mean=mean,
+            std=std,
+            stats=stats,
+            project_dir=device_project_dir,
         )
+        timings[device_str] = elapsed
 
-    print("Saving artifacts")
-    torch.save(model.state_dict(), os.path.join(args.project_dir, "final_model_loaded_from_best.pt"))
+    print("\n=== Résumé des temps d'exécution ===")
+    for device_str, elapsed in timings.items():
+        print(f"{device_str}: {elapsed:.2f}s")
 
-    with open(os.path.join(args.project_dir, "normalization_stats.json"), "w", encoding="utf-8") as f:
-        json.dump(stats, f, indent=2)
+    with open(os.path.join(args.project_dir, "device_timings.json"), "w", encoding="utf-8") as f:
+        json.dump(timings, f, indent=2)
 
-    with open(os.path.join(args.project_dir, "history.json"), "w", encoding="utf-8") as f:
-        json.dump(history, f, indent=2)
-
-    with open(os.path.join(args.project_dir, "one_step_test_metrics.json"), "w", encoding="utf-8") as f:
-        json.dump(
-            {
-                "best_val_loss_tplus6": best_val_loss,
-                "test_loss_tplus6": test_one_step_loss,
-                "example_metrics": one_step_metrics,
-            },
-            f,
-            indent=2,
-        )
-
-    with open(os.path.join(args.project_dir, "recursive_forecast_metrics.json"), "w", encoding="utf-8") as f:
-        json.dump(recursive_results, f, indent=2)
-
-    np.save(os.path.join(args.project_dir, "sample_target_tplus6_denorm.npy"), y0_denorm)
-    np.save(os.path.join(args.project_dir, "sample_prediction_tplus6_denorm.npy"), pred0_denorm)
-
-    save_loss_plot(history, args.project_dir)
-    save_prediction_example_plot(
-        y_true=y0_denorm,
-        y_pred=pred0_denorm,
-        out_dir=args.project_dir,
-        title_suffix="t+6",
-    )
-    save_recursive_metrics_plot(recursive_results, args.project_dir)
-
-    zip_results(args.project_dir)
+    if len(timings) >= 1:
+        save_device_comparison_plot(timings, args.project_dir)
 
     print("Done")
 
